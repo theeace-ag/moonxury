@@ -1,14 +1,17 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const Razorpay = require('razorpay');
-const crypto = require('crypto');
-const nodemailer = require('nodemailer');
-const { v4: uuidv4 } = require('uuid');
-const path = require('path');
-const QRCode = require('qrcode');
-const db = require('./database');
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import Razorpay from 'razorpay';
+import crypto from 'crypto';
+import nodemailer from 'nodemailer';
+import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import QRCode from 'qrcode';
+import db from './database.js';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -141,10 +144,12 @@ app.post('/api/verify-payment', async (req, res) => {
         });
 
         // Send confirmation email
-        await sendTicketEmail(registration, qrCodeDataURL);
-
-        // Notify admin
-        await sendAdminNotification(registration);
+        try {
+            await sendTicketEmail(registration, qrCodeDataURL);
+            await sendAdminNotification(registration);
+        } catch (emailError) {
+            console.error('Email error:', emailError);
+        }
 
         res.json({
             success: true,
@@ -300,7 +305,7 @@ async function sendAdminNotification(registration) {
     <p><strong>Name:</strong> ${registration.name}</p>
     <p><strong>Email:</strong> ${registration.email}</p>
     <p><strong>Phone:</strong> ${registration.phone}</p>
-    <p><strong>Amount:</strong> ₹50</p>
+    <p><strong>Amount:</strong> ₹1</p>
     <p><strong>Time:</strong> ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</p>
     `;
 

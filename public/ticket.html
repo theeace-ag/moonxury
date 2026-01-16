@@ -385,7 +385,7 @@
             const actionsDiv = document.getElementById('actions');
 
             try {
-                const response = await fetch(`/api/ticket?ticketNumber=${ticketNumber}`);
+                const response = await fetch(`/api/ticket/${ticketNumber}`);
 
                 if (!response.ok) {
                     throw new Error('Ticket not found');
