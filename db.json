@@ -1,0 +1,17 @@
+{
+  "registrations": [
+    {
+      "id": 1,
+      "ticket_number": "MXRY-MKGW89ZS-5TLS",
+      "name": "sskumar",
+      "email": "ayushmaan200913@gmail.com",
+      "phone": "8777817924",
+      "order_id": "order_S4YpbFWVAB6IFz",
+      "payment_id": null,
+      "amount": 1,
+      "payment_status": "pending",
+      "created_at": "2026-01-16T13:07:29.560Z",
+      "updated_at": "2026-01-16T13:07:29.560Z"
+    }
+  ]
+}

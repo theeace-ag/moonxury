@@ -330,6 +330,23 @@ app.get('/admin', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
+// Legal Pages
+app.get('/terms', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'terms.html'));
+});
+app.get('/privacy', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'privacy.html'));
+});
+app.get('/shipping', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'shipping.html'));
+});
+app.get('/refund', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'refund.html'));
+});
+app.get('/contact', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'contact.html'));
+});
+
 // Start server
 app.listen(PORT, () => {
     console.log(`🌙 MOONXURY Server running on http://localhost:${PORT}`);
