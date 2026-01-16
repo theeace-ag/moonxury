@@ -9,15 +9,14 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "sqlite3": "^5.1.7",
+    "better-sqlite3": "^9.2.2",
     "razorpay": "^2.9.2",
     "nodemailer": "^6.9.8",
     "dotenv": "^16.3.1",
     "cors": "^2.8.5",
     "body-parser": "^1.20.2",
     "uuid": "^9.0.0",
-    "qrcode": "^1.5.3",
-    "puppeteer": "^21.6.1"
+    "qrcode": "^1.5.3"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
