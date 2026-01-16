@@ -66,8 +66,8 @@
     <section class="registration" id="register">
         <div class="section-header">
             <span class="section-number">01</span>
-            <h2 class="section-title">SECURE YOUR SPOT</h2>
-            <p class="section-desc">Limited seats available. Book your luxury experience now.</p>
+            <h2 class="section-title">GUEST LIST/TABLE BOOKING</h2>
+            <p class="section-desc">Book your tickets</p>
         </div>
 
         <div class="form-container">
@@ -96,13 +96,29 @@
                     <div class="input-line"></div>
                 </div>
 
+                <div class="form-group">
+                    <label class="form-label" for="ticketType">TICKET TYPE</label>
+                    <select id="ticketType" name="ticketType" class="form-input form-select" required
+                        style="background: transparent; color: var(--color-text); border: none; width: 100%; padding: 10px 0; outline: none;">
+                        <option value="female_stag" data-price="0" style="background: var(--color-bg);">Female Stag -
+                            FREE</option>
+                        <option value="male_stag" data-price="799" style="background: var(--color-bg);">Male Stag - ₹799
+                        </option>
+                        <option value="couple" data-price="499" style="background: var(--color-bg);">Couple Entry - ₹499
+                        </option>
+                        <option value="table" data-price="999" style="background: var(--color-bg);">Table Booking - ₹999
+                            (₹800 Refundable)</option>
+                    </select>
+                    <div class="input-line"></div>
+                </div>
+
                 <div class="price-display">
-                    <div class="price-label">ENTRY PASS</div>
+                    <div class="price-label">TOTAL AMOUNT</div>
                     <div class="price-amount">
                         <span class="currency">₹</span>
-                        <span class="amount">1</span>
+                        <span class="amount" id="displayAmount">0</span>
                     </div>
-                    <div class="price-note">Includes venue access + DJ night experience</div>
+                    <div class="price-note" id="priceNote">Includes venue access</div>
                 </div>
 
                 <button type="submit" class="submit-btn" id="submitBtn">
@@ -140,7 +156,8 @@
                 <span class="ticket-label">TICKET NUMBER</span>
                 <span class="ticket-number" id="ticketNumber">MXRY-XXXXX</span>
             </div>
-            <p class="modal-note">A confirmation email with your ticket has been sent to your email address.</p>
+            <p class="modal-note">A confirmation email with your ticket has been sent to your email address.
+            </p>
             <div class="modal-actions">
                 <a href="#" class="modal-btn primary" id="viewTicketBtn">VIEW TICKET</a>
                 <button class="modal-btn secondary" id="closeModalBtn">CLOSE</button>
@@ -152,7 +169,7 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-logo">THEMOON</div>
-            <p class="footer-text">For Table / Guest List: +91 70032 50233</p>
+            <p class="footer-text">For Query: +91 70032 50233</p>
             <div class="footer-links">
                 <a href="https://www.instagram.com/themoonn.in/" target="_blank" class="footer-link">Instagram</a>
                 <div class="footer-legal-links">

@@ -53,7 +53,7 @@ function generateTicketNumber() {
 // Create Razorpay Order
 app.post('/api/create-order', async (req, res) => {
     try {
-        const { name, email, phone } = req.body;
+        const { name, email, phone, ticketType, amount } = req.body;
 
         // Validate input
         if (!name || !email || !phone) {
@@ -66,15 +66,59 @@ app.post('/api/create-order', async (req, res) => {
             return res.status(400).json({ error: 'This email is already registered' });
         }
 
-        // Create Razorpay order
+        // Handle Free Ticket (0 Amount)
+        if (amount == 0) {
+            const ticketNumber = generateTicketNumber();
+            const orderId = `FREE-${Date.now()}`;
+
+            await db.createRegistration({
+                ticketNumber,
+                name,
+                email,
+                phone,
+                ticketType,
+                orderId: orderId,
+                amount: 0,
+                paymentStatus: 'completed'
+            });
+
+            // Generate QR and send email
+            const qrData = JSON.stringify({
+                ticket: ticketNumber,
+                name: name,
+                event: 'MOONXURY 2025',
+                date: '25 Feb 2025'
+            });
+            const qrCodeDataURL = await QRCode.toDataURL(qrData, {
+                width: 200,
+                margin: 2
+            });
+
+            const registration = { ticket_number: ticketNumber, name, email, phone, amount: 0, ticket_type: ticketType };
+            try {
+                await sendTicketEmail(registration, qrCodeDataURL);
+                await sendAdminNotification(registration);
+            } catch (err) {
+                console.error('Email error for free ticket:', err);
+            }
+
+            return res.json({
+                success: true,
+                ticketNumber,
+                amount: 0
+            });
+        }
+
+        // Create Razorpay order for paid tickets
         const order = await razorpay.orders.create({
-            amount: 100, // Rs 1 in paise
+            amount: amount * 100, // Amount in paise
             currency: 'INR',
             receipt: uuidv4(),
             notes: {
                 name,
                 email,
-                phone
+                phone,
+                ticketType
             }
         });
 
@@ -85,8 +129,9 @@ app.post('/api/create-order', async (req, res) => {
             name,
             email,
             phone,
+            ticketType,
             orderId: order.id,
-            amount: 1,
+            amount: amount,
             paymentStatus: 'pending'
         });
 
@@ -94,7 +139,8 @@ app.post('/api/create-order', async (req, res) => {
             orderId: order.id,
             amount: order.amount,
             currency: order.currency,
-            keyId: process.env.RAZORPAY_KEY_ID
+            keyId: process.env.RAZORPAY_KEY_ID,
+            ticketNumber // Return ticket number for reference
         });
 
     } catch (error) {
@@ -271,6 +317,10 @@ async function sendTicketEmail(registration, qrCodeDataURL) {
                         <span class="detail-value">Kolkata (TBA)</span>
                     </div>
                     <div class="detail-row">
+                        <span class="detail-label">TICKET TYPE</span>
+                        <span class="detail-value">${registration.ticket_type || 'Regular'}</span>
+                    </div>
+                    <div class="detail-row">
                         <span class="detail-label">ENTRY</span>
                         <span class="detail-value">18+ Only</span>
                     </div>
@@ -302,17 +352,18 @@ async function sendAdminNotification(registration) {
     const adminHtml = `
     <h2>🎉 New Ticket Sold!</h2>
     <p><strong>Ticket Number:</strong> ${registration.ticket_number}</p>
+    <p><strong>Ticket Type:</strong> ${registration.ticket_type || 'Regular'}</p>
     <p><strong>Name:</strong> ${registration.name}</p>
     <p><strong>Email:</strong> ${registration.email}</p>
     <p><strong>Phone:</strong> ${registration.phone}</p>
-    <p><strong>Amount:</strong> ₹1</p>
+    <p><strong>Amount:</strong> ₹${registration.amount}</p>
     <p><strong>Time:</strong> ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</p>
     `;
 
     await transporter.sendMail({
         from: `"MOONXURY System" <${process.env.EMAIL_USER}>`,
         to: process.env.ADMIN_EMAIL,
-        subject: `🎫 Ticket Sold: ${registration.ticket_number}`,
+        subject: `🎫 Ticket Sold: ${registration.ticket_number} (${registration.ticket_type || 'Regular'})`,
         html: adminHtml
     });
 }

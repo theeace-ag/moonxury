@@ -20,13 +20,14 @@ await db.write();
 const dbHelpers = {
     // Create new registration
     createRegistration: async (data) => {
-        const { ticketNumber, name, email, phone, orderId, amount, paymentStatus } = data;
+        const { ticketNumber, name, email, phone, orderId, amount, paymentStatus, ticketType } = data;
         const registration = {
             id: db.data.registrations.length + 1,
             ticket_number: ticketNumber,
             name,
             email,
             phone,
+            ticket_type: ticketType || 'Regular',
             order_id: orderId,
             payment_id: null,
             amount,

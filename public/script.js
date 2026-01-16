@@ -35,11 +35,20 @@ function initForm() {
     const closeModalBtn = document.getElementById('closeModalBtn');
     const viewTicketBtn = document.getElementById('viewTicketBtn');
 
-    // Phone input validation - only numbers
-    const phoneInput = document.getElementById('phone');
-    phoneInput.addEventListener('input', (e) => {
-        e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
-    });
+    // Ticket Type handling
+    const ticketTypeSelect = document.getElementById('ticketType');
+    const displayAmount = document.getElementById('displayAmount');
+
+    function updatePrice() {
+        const selectedOption = ticketTypeSelect.options[ticketTypeSelect.selectedIndex];
+        const price = selectedOption.dataset.price;
+        displayAmount.textContent = price;
+    }
+
+    if (ticketTypeSelect) {
+        ticketTypeSelect.addEventListener('change', updatePrice);
+        updatePrice(); // Initial set
+    }
 
     // Form submission
     form.addEventListener('submit', async (e) => {
@@ -48,6 +57,11 @@ function initForm() {
         const name = document.getElementById('name').value.trim();
         const email = document.getElementById('email').value.trim();
         const phone = document.getElementById('phone').value.trim();
+        const ticketType = document.getElementById('ticketType').value;
+
+        // Get amount from selected option
+        const selectedOption = ticketTypeSelect.options[ticketTypeSelect.selectedIndex];
+        const amount = parseInt(selectedOption.dataset.price);
 
         // Validation
         if (!name || !email || !phone) {
@@ -70,13 +84,13 @@ function initForm() {
         submitBtn.disabled = true;
 
         try {
-            // Create order
+            // Create order (handles both free and paid)
             const orderResponse = await fetch('/api/create-order', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ name, email, phone })
+                body: JSON.stringify({ name, email, phone, ticketType, amount })
             });
 
             const orderData = await orderResponse.json();
@@ -85,13 +99,25 @@ function initForm() {
                 throw new Error(orderData.error || 'Failed to create order');
             }
 
-            // Configure Razorpay
+            // If free ticket, it's already confirmed
+            if (amount === 0 || orderData.success) {
+                loadingOverlay.classList.remove('active');
+                document.getElementById('ticketNumber').textContent = orderData.ticketNumber;
+                viewTicketBtn.href = `/ticket/${orderData.ticketNumber}`;
+                successModal.classList.add('active');
+                form.reset();
+                updatePrice();
+                submitBtn.disabled = false;
+                return;
+            }
+
+            // Configure Razorpay for paid tickets
             const options = {
                 key: orderData.keyId,
                 amount: orderData.amount,
                 currency: orderData.currency,
                 name: 'MOONXURY',
-                description: 'Event Entry Pass - ₹50',
+                description: `Event Entry Pass - ${ticketType}`,
                 order_id: orderData.orderId,
                 handler: async function (response) {
                     // Verify payment
@@ -124,6 +150,7 @@ function initForm() {
 
                         // Reset form
                         form.reset();
+                        updatePrice();
 
                     } catch (error) {
                         loadingOverlay.classList.remove('active');
