@@ -1,43 +1,12 @@
 {
-    "version": 2,
-    "builds": [
+    "rewrites": [
         {
-            "src": "api/**/*.js",
-            "use": "@vercel/node"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/api/create-order",
-            "dest": "/api/create-order.js"
+            "source": "/ticket/:path*",
+            "destination": "/ticket.html"
         },
         {
-            "src": "/api/verify-payment",
-            "dest": "/api/verify-payment.js"
-        },
-        {
-            "src": "/api/ticket",
-            "dest": "/api/ticket.js"
-        },
-        {
-            "src": "/api/admin/registrations",
-            "dest": "/api/admin/registrations.js"
-        },
-        {
-            "src": "/ticket/(.*)",
-            "dest": "/public/ticket.html"
-        },
-        {
-            "src": "/admin",
-            "dest": "/public/admin.html"
-        },
-        {
-            "src": "/asset/(.*)",
-            "dest": "/asset/$1"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/public/$1"
+            "source": "/admin",
+            "destination": "/admin.html"
         }
     ]
 }

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Ticket | MOONXURY</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #0A0A0A;
+            --color-bg-alt: #1A1A1A;
+            --color-light: #FAFAFA;
+            --color-accent: #C9A962;
+            --color-accent-light: #E5D4A1;
+            --color-text-muted: #6B6B6B;
+            --font-display: 'Cormorant Garamond', serif;
+            --font-body: 'Inter', sans-serif;
+            --font-accent: 'Space Grotesk', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            color: var(--color-light);
+        }
+
+        .page-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            letter-spacing: 0.3em;
+            margin-bottom: 40px;
+            color: var(--color-light);
+        }
+
+        /* Ticket Design */
+        .ticket {
+            background: var(--color-light);
+            border-radius: 24px;
+            overflow: hidden;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .ticket-header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
+            padding: 32px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ticket-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(201, 169, 98, 0.15) 0%, transparent 50%);
+        }
+
+        .brand-logo {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            letter-spacing: 0.5em;
+            color: var(--color-light);
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .event-name {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            color: var(--color-light);
+            position: relative;
+        }
+
+        .event-name span {
+            color: var(--color-accent);
+        }
+
+        .featuring {
+            margin-top: 16px;
+            position: relative;
+        }
+
+        .featuring-label {
+            font-family: var(--font-accent);
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
+            color: var(--color-accent);
+        }
+
+        .dj-name {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--color-light);
+            margin-top: 4px;
+        }
+
+        /* Ticket Tear Line */
+        .tear-line {
+            height: 2px;
+            background: repeating-linear-gradient(90deg, var(--color-bg) 0, var(--color-bg) 8px, transparent 8px, transparent 16px);
+            position: relative;
+        }
+
+        .tear-line::before,
+        .tear-line::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            background: var(--color-bg);
+            border-radius: 50%;
+            transform: translateY(-50%);
+        }
+
+        .tear-line::before {
+            left: -10px;
+        }
+
+        .tear-line::after {
+            right: -10px;
+        }
+
+        /* Ticket Body */
+        .ticket-body {
+            padding: 32px;
+            background: var(--color-light);
+            color: var(--color-bg);
+        }
+
+        .ticket-number-section {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .ticket-label {
+            font-family: var(--font-accent);
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
+            color: var(--color-text-muted);
+            margin-bottom: 8px;
+        }
+
+        .ticket-value {
+            font-family: var(--font-accent);
+            font-size: 1.5rem;
+            letter-spacing: 0.15em;
+            color: var(--color-bg);
+            font-weight: 500;
+        }
+
+        .ticket-details {
+            margin-bottom: 24px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-family: var(--font-accent);
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            color: var(--color-text-muted);
+        }
+
+        .detail-value {
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-align: right;
+        }
+
+        /* QR Section */
+        .qr-section {
+            text-align: center;
+            background: #f8f8f8;
+            padding: 24px;
+            border-radius: 16px;
+        }
+
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 12px;
+        }
+
+        .qr-note {
+            font-size: 0.7rem;
+            color: var(--color-text-muted);
+        }
+
+        /* Ticket Footer */
+        .ticket-footer {
+            background: var(--color-bg);
+            padding: 20px 32px;
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            margin-bottom: 8px;
+        }
+
+        .footer-contact {
+            font-size: 0.8rem;
+            color: var(--color-light);
+        }
+
+        /* Actions */
+        .ticket-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+            max-width: 420px;
+            width: 100%;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 16px 24px;
+            border-radius: 100px;
+            font-family: var(--font-accent);
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .action-btn.primary {
+            background: var(--color-accent);
+            color: var(--color-bg);
+        }
+
+        .action-btn.primary:hover {
+            background: var(--color-accent-light);
+        }
+
+        .action-btn.secondary {
+            background: transparent;
+            color: var(--color-light);
+            border: 1px solid var(--color-text-muted);
+        }
+
+        .action-btn.secondary:hover {
+            border-color: var(--color-light);
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 2px solid var(--color-text-muted);
+            border-top-color: var(--color-accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Error */
+        .error {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .error-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .error-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .error-message {
+            color: var(--color-text-muted);
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .ticket {
+                border-radius: 16px;
+            }
+
+            .ticket-header {
+                padding: 24px;
+            }
+
+            .event-name {
+                font-size: 2.5rem;
+            }
+
+            .ticket-body {
+                padding: 24px;
+            }
+
+            .ticket-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="page-title">MOONXURY</h1>
+
+    <div id="content">
+        <div class="loading">
+            <div class="loading-spinner"></div>
+            <p>Loading your ticket...</p>
+        </div>
+    </div>
+
+    <div class="ticket-actions" id="actions" style="display: none;">
+        <button class="action-btn primary" id="downloadBtn">DOWNLOAD TICKET</button>
+        <a href="/" class="action-btn secondary">BACK TO HOME</a>
+    </div>
+
+    <!-- html2canvas for screenshot -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const ticketNumber = window.location.pathname.split('/').pop();
+            const contentDiv = document.getElementById('content');
+            const actionsDiv = document.getElementById('actions');
+
+            try {
+                const response = await fetch(`/api/ticket?ticketNumber=${ticketNumber}`);
+
+                if (!response.ok) {
+                    throw new Error('Ticket not found');
+                }
+
+                const data = await response.json();
+
+                contentDiv.innerHTML = `
+                    <div class="ticket" id="ticketElement">
+                        <div class="ticket-header">
+                            <div class="brand-logo">THEMOON</div>
+                            <div class="event-name">MOON<span>XURY</span></div>
+                            <div class="featuring">
+                                <div class="featuring-label">PERFORMING LIVE</div>
+                                <div class="dj-name">DJ RD RAJAT</div>
+                            </div>
+                        </div>
+                        
+                        <div class="tear-line"></div>
+                        
+                        <div class="ticket-body">
+                            <div class="ticket-number-section">
+                                <div class="ticket-label">TICKET NUMBER</div>
+                                <div class="ticket-value">${data.ticketNumber}</div>
+                            </div>
+                            
+                            <div class="ticket-details">
+                                <div class="detail-row">
+                                    <span class="detail-label">GUEST NAME</span>
+                                    <span class="detail-value">${data.name}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">DATE</span>
+                                    <span class="detail-value">${data.eventDate}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">TIME</span>
+                                    <span class="detail-value">${data.eventTime}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">VENUE</span>
+                                    <span class="detail-value">${data.venue}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">ENTRY</span>
+                                    <span class="detail-value">18+ Only</span>
+                                </div>
+                            </div>
+                            
+                            <div class="qr-section">
+                                <img src="${data.qrCode}" alt="QR Code" class="qr-code">
+                                <p class="qr-note">Scan for verification at entry</p>
+                            </div>
+                        </div>
+                        
+                        <div class="ticket-footer">
+                            <p class="footer-text">Female Edition Launch × DJ Night</p>
+                            <p class="footer-contact">For queries: +91 70032 50233</p>
+                        </div>
+                    </div>
+                `;
+
+                actionsDiv.style.display = 'flex';
+
+                // Download functionality
+                document.getElementById('downloadBtn').addEventListener('click', async () => {
+                    const ticket = document.getElementById('ticketElement');
+                    const canvas = await html2canvas(ticket, {
+                        scale: 2,
+                        useCORS: true,
+                        backgroundColor: '#0A0A0A'
+                    });
+
+                    const link = document.createElement('a');
+                    link.download = `MOONXURY-Ticket-${data.ticketNumber}.png`;
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                });
+
+            } catch (error) {
+                contentDiv.innerHTML = `
+                    <div class="error">
+                        <div class="error-icon">🎫</div>
+                        <h2 class="error-title">Ticket Not Found</h2>
+                        <p class="error-message">This ticket doesn't exist or hasn't been paid for yet.</p>
+                        <a href="/" class="back-link">← Back to Registration</a>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+
+</html>
