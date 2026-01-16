@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slot Confirmation | MOONXURY</title>
+    <meta name="description" content="Register and confirm your slot for MOONXURY event.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Ambient Background -->
+    <div class="ambient-bg">
+        <div class="moon-glow"></div>
+        <div class="particles" id="particles"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-logo">
+            <span class="logo-text">THEMOON</span>
+            <span class="logo-divider">×</span>
+            <span class="logo-sub">THESUN, THEEACE, GOGRAB</span>
+        </div>
+        <div class="nav-date">
+            <span>25.02.2025</span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-poster-container">
+                <img src="/asset/Black Mystic Astrology Full Moon Guide Instagram Post.jpg" alt="MOONXURY Event Poster"
+                    class="hero-poster">
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Section -->
+    <section class="registration" id="register">
+        <div class="section-header">
+            <span class="section-number">01</span>
+            <h2 class="section-title">SLOT CONFIRMATION</h2>
+            <p class="section-desc">Confirm your presence to proceed to booking</p>
+        </div>
+
+        <div class="form-container">
+            <form id="registrationForm" class="registration-form">
+                <div class="form-group">
+                    <label class="form-label" for="name">FULL NAME</label>
+                    <input type="text" id="name" name="name" class="form-input" placeholder="Enter your full name"
+                        required>
+                    <div class="input-line"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="peopleCount">NUMBER OF PEOPLE</label>
+                    <input type="number" id="peopleCount" name="peopleCount" class="form-input"
+                        placeholder="Enter number of people" min="1" required>
+                    <div class="input-line"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">EMAIL ADDRESS</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="Enter your email"
+                        required>
+                    <div class="input-line"></div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="phone">PHONE NUMBER</label>
+                    <div class="phone-input-wrapper">
+                        <span class="phone-prefix">+91</span>
+                        <input type="tel" id="phone" name="phone" class="form-input phone-input"
+                            placeholder="Enter your phone number" pattern="[0-9]{10}" maxlength="10" required>
+                    </div>
+                    <div class="input-line"></div>
+                </div>
+
+                <div class="price-display">
+                    <div class="price-label">CONFIRMATION FEE</div>
+                    <div class="price-amount">
+                        <span class="currency">₹</span>
+                        <span class="amount">50</span>
+                    </div>
+                    <div class="price-note">Confirm your slot to access tickets</div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span class="btn-text">PAY & CONFIRM</span>
+                    <span class="btn-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </span>
+                </button>
+
+                <p class="form-note">Secure payment powered by Razorpay</p>
+            </form>
+
+            <!-- Loading State -->
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="loading-spinner"></div>
+                <p class="loading-text">Processing...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">THEMOON</div>
+            <p class="footer-text">For Query: +91 70032 50233</p>
+            <div class="footer-links">
+                <a href="https://www.instagram.com/themoonn.in/" target="_blank" class="footer-link">Instagram</a>
+                <div class="footer-legal-links">
+                    <a href="/terms" class="footer-link">Terms</a>
+                    <span class="footer-divider">|</span>
+                    <a href="/privacy" class="footer-link">Privacy</a>
+                    <span class="footer-divider">|</span>
+                    <a href="/shipping" class="footer-link">Shipping</a>
+                    <span class="footer-divider">|</span>
+                    <a href="/refund" class="footer-link">Refunds</a>
+                    <span class="footer-divider">|</span>
+                    <a href="/contact" class="footer-link">Contact</a>
+                </div>
+            </div>
+            <p class="footer-copyright">© 2025 THEMOON. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Razorpay Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="register-script.js"></script>
+</body>
+
+</html>

@@ -80,13 +80,48 @@ const dbHelpers = {
     // Get statistics
     getStats: async () => {
         const all = db.data.registrations;
+        const slots = db.data.slot_bookings || [];
         return {
             total: all.length,
             completed: all.filter(r => r.payment_status === 'completed').length,
             pending: all.filter(r => r.payment_status === 'pending').length,
             revenue: all.filter(r => r.payment_status === 'completed')
-                .reduce((sum, r) => sum + r.amount, 0)
+                .reduce((sum, r) => sum + r.amount, 0),
+            slots_confirmed: slots.filter(s => s.payment_status === 'completed').length,
+            slots_revenue: slots.filter(s => s.payment_status === 'completed').reduce((sum, s) => sum + s.amount, 0)
         };
+    },
+
+    // --- Slot Booking Helpers --- //
+    createSlotBooking: async (data) => {
+        if (!db.data.slot_bookings) db.data.slot_bookings = [];
+        const booking = {
+            id: db.data.slot_bookings.length + 1,
+            ...data,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+        };
+        db.data.slot_bookings.push(booking);
+        await db.write();
+        return booking;
+    },
+
+    getSlotBookingByOrderId: async (orderId) => {
+        if (!db.data.slot_bookings) return null;
+        return db.data.slot_bookings.find(b => b.order_id === orderId) || null;
+    },
+
+    updateSlotPaymentStatus: async (orderId, paymentId, status) => {
+        if (!db.data.slot_bookings) return { changes: 0 };
+        const booking = db.data.slot_bookings.find(b => b.order_id === orderId);
+        if (booking) {
+            booking.payment_id = paymentId;
+            booking.payment_status = status;
+            booking.updated_at = new Date().toISOString();
+            await db.write();
+            return { changes: 1 };
+        }
+        return { changes: 0 };
     }
 };
 
