@@ -250,6 +250,29 @@ body {
     display: block;
 }
 
+/* Hero Poster */
+.hero-poster-container {
+    width: 100%;
+    max-width: 500px;
+    /* Adjusting for optimal view size */
+    margin: 0 auto;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.hero-poster {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.hero-poster:hover {
+    transform: scale(1.02);
+}
+
 .title-accent {
     color: var(--color-accent);
     font-weight: 400;
